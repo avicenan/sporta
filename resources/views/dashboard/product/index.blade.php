@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.admin-app')
 @section('content')
     <div class="d-flex justify-content-between align-items-baseline gap-2 mb-2">
         <button class="btn btn-outline-dark d-flex align-items-center" data-bs-toggle="modal"
@@ -38,7 +38,7 @@
             <tbody>
                 @if ($products->isEmpty())
                     <tr>
-                        <td colspan="8">Tidak ada kategori ditemukan</td>
+                        <td colspan="8">Tidak ada produk ditemukan</td>
                     </tr>
                 @else
                     @foreach ($products as $product)
@@ -47,7 +47,7 @@
                             <td>{{ $product->name }}</td>
                             <td>{{ $product->category->name }}</td>
                             <td>{{ $product->stock }}</td>
-                            <td>Rp. {{ $product->price }}</td>
+                            <td>Rp. {{ number_format($product->price, 0, ',', '.') }}</td>
                             <td>
                                 <img src="{{ asset('storage/' . $product->photo) }}"
                                     onerror="this.src='{{ asset('storage/placeholder/placeholder-img.png') }}'"
@@ -83,10 +83,10 @@
                                             data-bs-title="Aktifkan produk">check_circle</span>
                                     </button>
                                 @endif
-                                <button class="btn btn-outline-danger pb-1">
+                                {{-- <button class="btn btn-outline-danger pb-1">
                                     <span class="material-symbols-rounded fs-5" data-bs-toggle="tooltip"
                                         data-bs-title="Hapus produk">delete</span>
-                                </button>
+                                </button> --}}
 
                             </td>
                         </tr>

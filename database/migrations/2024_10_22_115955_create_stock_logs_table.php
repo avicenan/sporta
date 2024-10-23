@@ -14,8 +14,9 @@ return new class extends Migration
     {
         Schema::create('stock_logs', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(Product::class, 'product_id');
-            $table->integer('added_stock');
+            // $table->foreignIdFor(Product::class, 'product_id');
+            $table->foreignId('product_id')->constrained('products')->cascadeOnDelete();
+            $table->string('added_stock');
             $table->string('information');
             $table->timestamps();
         });

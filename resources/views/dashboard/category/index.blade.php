@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.admin-app')
 @section('content')
     <div class="d-flex gap-2 mb-2">
         <button class="btn btn-outline-dark d-flex align-items-center" data-bs-toggle="modal"
@@ -44,7 +44,7 @@
                             <th>{{ $category->id }}</th>
                             <td><span class="material-symbols-rounded">{{ $category->icon }}</span></td>
                             <td>{{ $category->name }}</td>
-                            <td>{{ $category->product_qty ?? $category->products->count() }}</td>
+                            <td>{{ $category->products->count() }}</td>
                             <td>{{ $category->status }}</td>
                             <td>
                                 <button class="btn btn-outline-warning pb-1" data-bs-toggle="modal"
@@ -57,10 +57,17 @@
                                     <span class="material-symbols-rounded fs-5" data-bs-toggle="tooltip"
                                         data-bs-title="Lihat detail">visibility</span>
                                 </button>
-                                <button class="btn btn-outline-secondary pb-1">
-                                    <span class="material-symbols-rounded fs-5" data-bs-toggle="tooltip"
-                                        data-bs-title="Non-aktifkan produk">do_not_disturb_on</span>
-                                </button>
+                                @if ($category->status == 'aktif')
+                                    <button class="btn btn-outline-secondary pb-1">
+                                        <span class="material-symbols-rounded fs-5" data-bs-toggle="tooltip"
+                                            data-bs-title="Non-aktifkan kategori">do_not_disturb_on</span>
+                                    </button>
+                                @else
+                                    <button class="btn btn-outline-success pb-1">
+                                        <span class="material-symbols-rounded fs-5" data-bs-toggle="tooltip"
+                                            data-bs-title="Aktifkan kategori">check_circle</span>
+                                    </button>
+                                @endif
                                 {{-- <button class="btn btn-outline-danger pb-1">
                                 <span class="material-symbols-rounded fs-5" data-bs-toggle="tooltip"
                                     data-bs-title="Hapus produk">delete</span>
@@ -84,13 +91,13 @@
     {{-- MODAL --}}
 
     {{-- Create Category Modal --}}
-    @include('category.create')
+    @include('dashboard.category.create')
 
     {{-- Show Category Modal --}}
-    @include('category.show')
+    @include('dashboard.category.show')
 
     {{-- Edit Category Modal --}}
-    @include('category.edit')
+    @include('dashboard.category.edit')
 
     {{-- Script --}}
     <script>

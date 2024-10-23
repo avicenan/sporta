@@ -20,7 +20,7 @@ class ProductController extends Controller
 
         $categories = Category::select('id', 'name')->get();
 
-        return view('product.index', [
+        return view('dashboard.product.index', [
             'nav' => 'Produk',
             'products' => $products,
             'categories' => $categories
@@ -48,7 +48,7 @@ class ProductController extends Controller
             'price' => 'required|numeric|min:1000',
             'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'description' => 'required|string',
-            'status' => 'nullable|in:aktif,non-aktif',
+            'status' => 'string|max:64',
         ]);
 
         // Handle the file upload 
@@ -91,7 +91,7 @@ class ProductController extends Controller
             'price' => 'required|numeric|min:1000',
             'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'description' => 'required|string',
-            'status' => 'nullable|in:aktif,non-aktif',
+            'status' => 'string|max:64',
         ]);
 
         // Handle the file upload 
@@ -123,7 +123,7 @@ class ProductController extends Controller
         // Writting log
         StockLog::create([
             'product_id' => $product->id,
-            'added_stock' => $validatedData['stock'],
+            'added_stock' => '+' . $validatedData['stock'],
             'information' => $validatedData['information'],
             // 'user_id' => auth()->id(),
         ]);

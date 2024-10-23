@@ -15,7 +15,7 @@ class CategoryController extends Controller
     {
         $categories = Category::paginate(10);
 
-        return view('category.index', [
+        return view('dashboard.category.index', [
             'nav' => 'Kategori',
             'categories' => $categories
         ]);
@@ -66,17 +66,21 @@ class CategoryController extends Controller
      */
     public function update(UpdateCategoryRequest $request, Category $category)
     {
+        // return dd($request);
+
         $validatedData = $request->validate([
-            'name' => 'required|string|unique:categories|max:255',
+            'name' => 'required|string|max:255',
             'icon' => 'required|string|max:64',
             'description' => 'required|string|max:1000',
             'status' => 'string|max:64',
         ]);
 
+        // return dd($validatedData);
+
         $category->update($validatedData);
         $category->save();
 
-        return redirect()->back()->with('success', 'Berhasil merperbarui kategori ' . $request->name);
+        return redirect()->back()->with('success', 'Berhasil merperbarui kategori "' . $request->name . '"');
     }
 
     /**

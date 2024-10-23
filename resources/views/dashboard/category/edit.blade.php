@@ -7,6 +7,7 @@
             </div>
             <form action="" id="editForm" method="POST">
                 @csrf
+                @method('PUT')
                 <div class="modal-body">
                     <div class="mb-3">
                         <label for="editName" class="form-label">Nama kategori</label>
