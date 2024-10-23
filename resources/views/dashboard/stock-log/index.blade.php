@@ -1,4 +1,4 @@
-@extends('layouts.admin-app')
+@extends('layouts.dashboard-app')
 @section('content')
     {{-- Products List --}}
     <div class="card p-3 mb-2">

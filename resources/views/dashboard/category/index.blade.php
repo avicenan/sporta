@@ -1,4 +1,4 @@
-@extends('layouts.admin-app')
+@extends('layouts.dashboard-app')
 @section('content')
     <div class="d-flex gap-2 mb-2">
         <button class="btn btn-outline-dark d-flex align-items-center" data-bs-toggle="modal"

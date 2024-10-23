@@ -1,12 +1,14 @@
-@extends('layouts.guest')
+@extends('layouts.auth')
 
 @section('content')
     {{-- register page --}}
 
-    <div class="d-flex justify-content-center align-items-center mt-5">
+    <div class="d-flex justify-content-center align-items-center">
         <div class="w-100">
             <div class="card">
                 <h2 class="card-header">Daftar</h2>
+                <img src="{{ asset('storage/placeholder/placeholder-img.png') }}" class="card-img-top object-fit-cover"
+                    alt="..." style="max-height: 250px">
                 <div class="card-body">
                     <form method="POST" action="/register">
                         @csrf
@@ -51,6 +53,20 @@
                         </div>
                         <button type="submit" class="btn btn-primary">Daftar</button>
                     </form>
+
+                    {{-- sudah punya akun --}}
+                    @if (Route::has('login'))
+                        <div class="mt-3">
+                            Sudah punya akun?
+                            <a href="{{ route('login') }}"> Masuk sekarang</a>
+                        </div>
+                    @endif
+                </div>
+                <div class="card-footer">
+                    <div class="d-flex">
+                        <div class=""><span class="material-symbols-rounded text-primary">store</span></div>
+                        <div class="ms-2"><a href="/shop">Kembali ke toko</a></div>
+                    </div>
                 </div>
             </div>
         </div>

@@ -5,7 +5,7 @@
             <span class="fs-5 d-none d-sm-inline fw-bold">Sporta Admin</span>
         </a>
         <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start" id="menu">
-            <li class="nav-item mb-5">
+            <li class="nav-item mb-5 @if (Route::is('dashboard')) fw-bold @endif">
                 <a href="/dashboard" class="nav-link px-0 align-middle text-white d-flex">
                     <div class="">
                         <span class="material-symbols-rounded">
@@ -15,10 +15,15 @@
                     <div class="ms-3 d-none d-sm-inline fs-5">
                         <span>Dashboard</span>
                     </div>
+                    @if (Route::is('dashboard'))
+                        <div class="ms-3">
+                            <span class="material-symbols-rounded fs-6 text-warning shadow">circle</span>
+                        </div>
+                    @endif
                 </a>
             </li>
-            <li class="mb-3  @if (Route::is('sales.*')) fw-bold ms-3 @endif">
-                <a href="/sales" class="nav-link px-0 align-middle text-white d-flex">
+            <li class="mb-3 @if (Route::is('sales.*')) fw-bold ms-3 @endif">
+                <a href="/dashboard/sales" class="nav-link px-0 align-middle text-white d-flex">
                     <div class="">
                         <span class="material-symbols-rounded">
                             receipt
@@ -35,7 +40,7 @@
                 </a>
             </li>
             <li class="mb-3 @if (Route::is('products.*')) fw-bold ms-3 @endif">
-                <a href="/products" class="nav-link px-0 align-middle text-white d-flex">
+                <a href="/dashboard/products" class="nav-link px-0 align-middle text-white d-flex">
                     <div class="">
                         <span class="material-symbols-rounded">
                             sports_basketball
@@ -52,7 +57,7 @@
                 </a>
             </li>
             <li class="mb-3  @if (Route::is('categories.*')) fw-bold ms-3 @endif">
-                <a href="/categories" class="nav-link px-0 align-middle text-white d-flex">
+                <a href="/dashboard/categories" class="nav-link px-0 align-middle text-white d-flex">
                     <div class="">
                         <span class="material-symbols-rounded">
                             category
@@ -69,7 +74,7 @@
                 </a>
             </li>
             <li class="mb-3  @if (Route::is('stock-logs.*')) fw-bold ms-3 @endif">
-                <a href="/stock-logs" class="nav-link px-0 align-middle text-white d-flex">
+                <a href="/dashboard/stock-logs" class="nav-link px-0 align-middle text-white d-flex">
                     <div class="">
                         <span class="material-symbols-rounded">
                             sync_alt
@@ -86,7 +91,7 @@
                 </a>
             </li>
             <li class="mb-3">
-                <a href="#" class="nav-link px-0 align-middle text-white d-flex">
+                <a href="/dashboard/customers" class="nav-link px-0 align-middle text-white d-flex">
                     <div class="">
                         <span class="material-symbols-rounded">
                             groups
@@ -97,17 +102,17 @@
                     </div>
                 </a>
             </li>
-            <li class="mb-3  @if (Route::is('home.*')) fw-bold ms-3 @endif">
+            <li class="mb-3  @if (Route::is('shop')) fw-bold ms-3 @endif">
                 <a href="/shop" class="nav-link px-0 align-middle text-white d-flex">
                     <div class="">
                         <span class="material-symbols-rounded">
-                            public
+                            store
                         </span>
                     </div>
                     <div class="ms-3 d-none d-sm-inline">
-                        <span class=""><i>Sporta.com </i>(public)</span>
+                        <span class="">Shop (public)</span>
                     </div>
-                    @if (Route::is('home.*'))
+                    @if (Route::is('shop*'))
                         <div class="ms-3">
                             <span class="material-symbols-rounded fs-6 text-warning shadow">circle</span>
                         </div>
@@ -116,28 +121,30 @@
             </li>
         </ul>
         <hr>
-        <div class="dropdown pb-4">
-            <a href="#"
-                class="d-flex align-items-center text-white text-decoration-none dropdown-toggle text-white"
-                id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
-                <img src="https://github.com/mdo.png" alt="hugenerd" width="30" height="30"
-                    class="rounded-circle">
-                <span class="d-none d-sm-inline mx-1 ms-3">Avicena</span>
-            </a>
-            <ul class="dropdown-menu dropdown-menu-dark text-small shadow">
-                <li><a class="dropdown-item" href="#">New project...</a></li>
-                <li><a class="dropdown-item" href="#">Settings</a></li>
-                <li><a class="dropdown-item" href="#">Profile</a></li>
-                <li>
-                    <hr class="dropdown-divider">
-                </li>
-                <li>
-                    <form action="/logout" method="POST">
-                        @csrf
-                        <button type="submit" class="dropdown-item">Logout</button>
-                    </form>
-                </li>
-            </ul>
-        </div>
+        @if (Auth::check())
+            <div class="dropdown pb-4">
+                <a href="#"
+                    class="d-flex align-items-center text-white text-decoration-none dropdown-toggle text-white"
+                    id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
+                    <img src="{{ asset('storage/placeholder/no-avatar.png') }}" alt="hugenerd" width="30"
+                        height="30" class="rounded-circle">
+                    <span class="d-none d-sm-inline mx-1 ms-3">{{ Auth::user()->name }}</span>
+                </a>
+                <ul class="dropdown-menu dropdown-menu-dark text-small shadow">
+                    <li><a class="dropdown-item" href="/shop">Shop</a></li>
+                    <li><a class="dropdown-item" href="#">Settings</a></li>
+                    <li><a class="dropdown-item" href="#">Profile</a></li>
+                    <li>
+                        <hr class="dropdown-divider">
+                    </li>
+                    <li>
+                        <form action="/logout" method="POST">
+                            @csrf
+                            <button type="submit" class="dropdown-item">Logout</button>
+                        </form>
+                    </li>
+                </ul>
+            </div>
+        @endif
     </div>
 </nav>

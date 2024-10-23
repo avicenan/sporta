@@ -20,18 +20,14 @@
 </head>
 
 <body>
+    {{-- @include('layouts.guest-navbar') --}}
 
-    <div class="container-fluid">
-        <div class="row flex-nowrap">
-            <div
-                class="col-auto col-md-3 col-xl-2 px-sm-2 px-0 bg-primary bg-gradient rounded-end-3 vh-100 position-sticky top-0">
-                @include('layouts.admin-sidebar')
-            </div>
-            <div class="col py-3">
-                @include('layouts.admin-navbar')
-                <div class=" py-5">
-                    @yield('content')
-                </div>
+    <div class="min-vh-100 container-fluid"
+        style="background: rgb(13,110,253);
+background: linear-gradient(0deg, rgba(13,110,253,1) 0%, rgba(13,110,253,1) 20%, rgba(8,148,254,1) 50%, rgba(0,212,255,1) 100%);">
+        <div class="row justify-content-center">
+            <div class="col-4 mt-5">
+                @yield('content')
             </div>
         </div>
     </div>
@@ -45,6 +41,7 @@
         const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
         const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
     </script>
+
 </body>
 
 </html>

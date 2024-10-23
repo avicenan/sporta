@@ -25,11 +25,11 @@
         <div class="row flex-nowrap">
             <div
                 class="col-auto col-md-3 col-xl-2 px-sm-2 px-0 bg-info-subtle border border-2 shadow bg-gradient rounded-end-3 vh-100 position-sticky top-0">
-                @include('layouts.auth-sidebar')
+                @include('layouts.shop-sidebar')
             </div>
             <div class="col py-3">
-                <div class="position-sticky z-1" style="top: 1rem">@include('layouts.auth-navbar')</div>
-                <div class=" py-5 z-0">
+                <div class="position-sticky z-1" style="top: 1rem">@include('layouts.shop-navbar')</div>
+                <div class=" py-3 z-0">
                     @yield('content')
                 </div>
             </div>
@@ -48,12 +48,26 @@
 
     <script>
         // Bag count
-        function countBag() {
-            let bag = JSON.parse(sessionStorage.getItem('bag')) || [];
-            const bagCount = document.getElementById('bag-count');
-            bagCount.innerHTML = bag.length;
+        // function countBag() {
+        //     let bag = JSON.parse(sessionStorage.getItem('bag')) || [];
+        //     const bagCount = document.getElementById('bag-count');
+        //     bagCount.innerHTML = bag.length;
+        // }
+        // countBag();
+
+        // show product detail
+        function showDetail(product) {
+            const modal = document.getElementById('product-detail-modal');
+            const nameLabel = document.getElementById('product-detail-modal-label');
+            const priceLabel = modal.querySelector('h2');
+            const descriptionPara = modal.querySelector('p');
+            const image = modal.querySelector('img');
+
+            nameLabel.innerHTML = product.name;
+            priceLabel.innerHTML = 'Rp. ' + new Intl.NumberFormat('id-ID').format(product.price);
+            descriptionPara.innerHTML = product.description;
+            image.src = 'storage/' + product.photo;
         }
-        countBag();
     </script>
 </body>
 

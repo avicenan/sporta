@@ -17,4 +17,9 @@ class Product extends Model
     {
         return $this->hasMany(StockLog::class);
     }
+
+    public function bags()
+    {
+        return $this->belongsToMany(Bag::class, 'bag_products')->withPivot('quantity')->withTimestamps();
+    }
 }
