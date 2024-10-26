@@ -1,19 +1,22 @@
-<nav class="navbar bg-body-secondary rounded-3 p-2">
+<nav class="navbar bg-body-secondary rounded-3 p-2 mb-3">
     <div class="container-fluid">
         <a class="navbar-brand fw-bold fs-3">{{ $nav ?? '-lost-' }}</a>
         @if (Route::is('shop'))
             <div class="d-flex gap-3">
                 <form class="d-flex" role="search" action="/shop" method="GET">
-                    <input class="form-control me-2" type="search" placeholder="Search product" aria-label="Search"
-                        name="search">
-                    <button class="btn btn-outline-success" type="submit">Search</button>
+                    <input class="form-control me-2" type="search" placeholder="Cari nama atau kode produk"
+                        aria-label="Search" name="search">
+                    <button class="btn btn-outline-success" type="submit">Cari</button>
                 </form>
-                @if (Auth::check())
-                    <a href="/checkout-bag" class="btn">
+                @auth
+                    <a href="/my-bag" class="btn position-relative">
                         <span class="material-symbols-rounded fs-2">shopping_bag</span>
-                        <span class="badge text-bg-secondary" id="bag-count">{{ $bagCount }}</span>
+                        {{-- <span class="position-absolute translate-middle badge rounded-pill bg-danger" id="bag-count-badge"
+                            style="top: 75%; start: 10%;">
+                            {{ $bagProducts->count() }}
+                        </span> --}}
                     </a>
-                @endif
+                @endauth
             </div>
         @else
             <a href="/shop" class="btn">
@@ -22,9 +25,3 @@
         @endif
     </div>
 </nav>
-<script>
-    document.getElementById('hidden-bag-form').addEventListener('submit', function() {
-        const bag = sessionStorage.getItem('bag');
-        document.getElementById('hidden-bag-input').value = bag;
-    });
-</script>

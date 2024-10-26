@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Sales extends Model
+class Order extends Model
 {
     protected $guarded = ['id', 'timestamps'];
 
@@ -16,5 +16,10 @@ class Sales extends Model
     public function bag()
     {
         return $this->belongsTo(Bag::class);
+    }
+
+    public function items()
+    {
+        return $this->hasMany(OrderItems::class);
     }
 }

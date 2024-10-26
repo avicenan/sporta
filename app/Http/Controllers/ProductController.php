@@ -8,12 +8,10 @@ use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\UpdateProductRequest;
 use App\Models\Category;
 use App\Models\StockLog;
+use Illuminate\Support\Facades\Auth;
 
 class ProductController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
         $products = Product::paginate(10);
@@ -27,17 +25,6 @@ class ProductController extends Controller
         ]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(StoreProductRequest $request)
     {
         // Validate the form input
@@ -58,30 +45,24 @@ class ProductController extends Controller
         }
 
         // Save the validated data to the database
-        Product::create($validatedData);
+        try {
+            $product = Product::create($validatedData);
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Gagal menambahkan produk "' . $request->name . '", ' . $e->getMessage());
+        }
 
-        return redirect()->back()->with('success', 'Berhasil menambahkan produk baru');
+        // writting log
+        StockLog::create([
+            'product_id' => $product->id,
+            'user_id' => Auth::id(),
+            'stock_change' => $product->stock,
+            'type' => 'masuk',
+            'information' => 'Produk baru ditambahkan',
+        ]);
+
+        return redirect()->back()->with('success', 'Berhasil menambahkan produk "' . $product->name . '"');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Product $product)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Product $product)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(UpdateProductRequest $request, Product $product)
     {
         // Validate the form input
@@ -106,35 +87,29 @@ class ProductController extends Controller
         return redirect()->back()->with('success', 'Berhasil mengubah produk "' . $product->name . '"');
     }
 
-    /**
-     * Add the stock of the product.
-     */
     public function addStock(AddStockRequest $request, Product $product)
     {
         $validatedData = $request->validate([
-            'stock' => 'required|integer|min:1',
+            'qty' => 'required|integer|min:1',
             'information' => 'required|string|max:255',
         ]);
 
         // Update stock
-        $product->stock += $validatedData['stock'];
+        $product->stock += $validatedData['qty'];
         $product->save();
 
-        // Writting log
         StockLog::create([
             'product_id' => $product->id,
-            'added_stock' => '+' . $validatedData['stock'],
+            'user_id' => Auth::id(),
+            'stock_change' => $validatedData['qty'],
+            'type' => 'masuk',
             'information' => $validatedData['information'],
-            // 'user_id' => auth()->id(),
         ]);
 
         return redirect()->back()->with('success', 'Stok produk "' . $product->name . '" berhasil ditambahkan!');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Product $product)
+    public function deactivate(Product $product)
     {
         //
     }

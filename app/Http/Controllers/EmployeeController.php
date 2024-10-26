@@ -2,18 +2,24 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Customer;
-use App\Http\Requests\StoreCustomerRequest;
-use App\Http\Requests\UpdateCustomerRequest;
+use App\Models\User;
+use Illuminate\Http\Request;
 
-class CustomerController extends Controller
+class EmployeeController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        //
+        // search user where role_id is not 1
+        $employees = User::where('role_id', '!=', 1)->paginate(10);
+
+
+        return view('dashboard.employee.index', [
+            'nav' => 'Pegawai',
+            'employees' => $employees
+        ]);
     }
 
     /**
@@ -25,17 +31,9 @@ class CustomerController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
-     */
-    public function store(StoreCustomerRequest $request)
-    {
-        //
-    }
-
-    /**
      * Display the specified resource.
      */
-    public function show(Customer $customer)
+    public function show(User $user)
     {
         //
     }
@@ -43,7 +41,7 @@ class CustomerController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Customer $customer)
+    public function edit(User $user)
     {
         //
     }
@@ -51,7 +49,7 @@ class CustomerController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateCustomerRequest $request, Customer $customer)
+    public function update(Request $request, User $user)
     {
         //
     }
@@ -59,7 +57,7 @@ class CustomerController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Customer $customer)
+    public function destroy(User $user)
     {
         //
     }

@@ -1,12 +1,13 @@
 <?php
 
 use App\Http\Controllers\CategoryController;
-use App\Http\Controllers\CheckoutController;
+use App\Http\Controllers\BagController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\RegisterController;
-use App\Http\Controllers\SalesController;
 use App\Http\Controllers\ShopController;
 use App\Http\Controllers\StockLogController;
 use Illuminate\Support\Facades\Route;
@@ -22,34 +23,45 @@ Route::controller(ShopController::class)->group(function () {
 });
 
 // Auth
-Route::controller(RegisterController::class)->group(function () {
-    Route::get('/register', 'index')->name('register');
-    Route::post('/register', 'store')->name('register.store');
-});
+// Guest middleware group
+Route::middleware(['guest'])->group(function () {
+    Route::controller(RegisterController::class)->group(function () {
+        Route::get('/register', 'index')->name('register');
+        Route::post('/register', 'store')->name('register.store');
+    });
 
-Route::controller(LoginController::class)->group(function () {
-    Route::get('/login', 'index')->name('login');
-    Route::post('/login', 'authenticate')->name('login.authenticate');
-    Route::post('/logout', 'logout')->name('logout');
+    Route::controller(LoginController::class)->group(function () {
+        Route::get('/login', 'index')->name('login');
+        Route::post('/login', 'authenticate')->name('login.authenticate');
+    });
 });
 
 // User middleware
 Route::middleware(['auth'])->group(function () {
-    Route::controller(CheckoutController::class)->group(function () {
-        Route::get('/checkout-bag', 'bag')->name('checkout.bag');
-        Route::post('/addToBag', 'addToBag')->name('checkout.addToBag');
+    Route::controller(BagController::class)->group(function () {
+        Route::get('/my-bag', 'bag')->name('bag');
+        Route::post('/pay', 'pay')->name('pay');
+        Route::post('/addToBag', 'addToBag')->name('addToBag');
+        Route::post('/dropFromBag', 'dropFromBag')->name('dropFromBag');
     });
+
+    Route::controller(LoginController::class)->group(function () {
+        Route::post('/logout', 'logout')->name('logout');
+    });
+
+    Route::post('/checkout', [OrderController::class, 'store'])->name('checkout');
+    Route::post('/stock-logs', [StockLogController::class, 'store'])->name('stock-logs.store');
 });
 
 // Admin middleware
 Route::middleware(['auth', 'admin'])->group(function () {
 
-    Route::controller(SalesController::class)->group(function () {
-        Route::get('/dashboard/sales', 'index')->name('sales.index');
+    Route::get('/dashboard', function () {
+        return redirect()->route('orders.index');
     });
 
-    Route::controller(DashboardController::class)->group(function () {
-        Route::get('/dashboard', 'index')->name('dashboard');
+    Route::controller(OrderController::class)->group(function () {
+        Route::get('/dashboard/orders', 'index')->name('orders.index');
     });
 
     Route::controller(ProductController::class)->group(function () {
@@ -67,6 +79,10 @@ Route::middleware(['auth', 'admin'])->group(function () {
 
     Route::controller(StockLogController::class)->group(function () {
         Route::get('/dashboard/stock-logs', 'index')->name('stock-logs.index');
+    });
+
+    Route::controller(EmployeeController::class)->group(function () {
+        Route::get('/dashboard/employees', 'index')->name('employees.index');
     });
 
     // buat sales route

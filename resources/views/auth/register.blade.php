@@ -7,8 +7,8 @@
         <div class="w-100">
             <div class="card">
                 <h2 class="card-header">Daftar</h2>
-                <img src="{{ asset('storage/placeholder/placeholder-img.png') }}" class="card-img-top object-fit-cover"
-                    alt="..." style="max-height: 250px">
+                <img src="{{ asset('storage/full-logo.webp') ?? asset('storage/placeholder/placeholder-img.png') }}"
+                    class="card-img-top object-fit-cover" alt="..." style="max-height: 250px">
                 <div class="card-body">
                     <form method="POST" action="/register">
                         @csrf

@@ -72,17 +72,6 @@
                                     <span class="material-symbols-rounded fs-5" data-bs-toggle="tooltip"
                                         data-bs-title="Tambah produk">exposure_plus_1</span>
                                 </button>
-                                @if ($product->status === 'aktif')
-                                    <button class="btn btn-outline-secondary pb-1">
-                                        <span class="material-symbols-rounded fs-5" data-bs-toggle="tooltip"
-                                            data-bs-title="Non-aktifkan produk">do_not_disturb_on</span>
-                                    </button>
-                                @else
-                                    <button class="btn btn-outline-success pb-1">
-                                        <span class="material-symbols-rounded fs-5" data-bs-toggle="tooltip"
-                                            data-bs-title="Aktifkan produk">check_circle</span>
-                                    </button>
-                                @endif
                                 {{-- <button class="btn btn-outline-danger pb-1">
                                     <span class="material-symbols-rounded fs-5" data-bs-toggle="tooltip"
                                         data-bs-title="Hapus produk">delete</span>
@@ -97,7 +86,6 @@
     </div>
 
     {{-- Pagination Nav --}}
-
     <div class="mb-2"><i>Menampilkan hasil dari {{ $products->firstItem() }} sampai {{ $products->lastItem() }} dari
             {{ $products->total() }}</i>
     </div>
@@ -131,8 +119,7 @@
                             <label for="category_id" class="form-label">Kategori</label>
                             <div class="input-group">
                                 <label class="input-group-text" for="category_id" id="categoryIconImg"></label>
-                                <select class="form-select" id="category" name="category_id" onchange=""
-                                    required>
+                                <select class="form-select" id="category" name="category_id" onchange="" required>
                                     @isset($categories)
                                         @foreach ($categories as $category)
                                             <option value="{{ $category->id }}">{{ $category->name }}</option>
@@ -379,14 +366,14 @@
                                     disabled>
                                 <span class="input-group-text">+</span>
                                 <input type="number" class="form-control" placeholder="5" id="add-stock"
-                                    name="stock" value="{{ old('stock') }}" required>
+                                    name="qty" value="{{ old('qty') }}" required>
                             </div>
                         </div>
 
                         <div class="mb-3">
                             <label for="information" class="form-label">Keterangan</label>
                             <input type="text" class="form-control" id="information" name="information"
-                                placeholder="Rani, vendor A, suplai bulanan" required>
+                                placeholder="vendor A, suplai bulanan" required>
                             <div id="informationHelp" class="form-text">Keterangan berisi siapa yang menambahkan stok
                                 dan darimana stok berasal.</div>
                         </div>
@@ -401,95 +388,5 @@
     </form>
 
     {{-- Script --}}
-    <script>
-        function addStock(product) {
-            const productName = document.getElementById("add-stock-product");
-            const nowStock = document.getElementById("now-stock");
-            const addStockForm = document.getElementById("add-stock-form")
-
-            productName.value = product.name;
-            nowStock.value = product.stock;
-            addStockForm.action = `/products/${product.id}/addStock`;
-            console.log(addStockForm.action);
-        }
-
-        function previewImage(event) {
-            var input = event.target;
-            var reader = new FileReader();
-
-            reader.onload = function() {
-                var preview = document.getElementById('preview');
-                preview.src = reader.result;
-                preview.style.display = 'block';
-            }
-
-            // Read the selected file as a data URL
-            if (input.files && input.files[0]) {
-                reader.readAsDataURL(input.files[0]);
-            }
-        }
-
-        function showProduct(product) {
-            const showName = document.getElementById("show-name");
-            const showCategory = document.getElementById("show-category_id");
-            const showStock = document.getElementById("show-stock");
-            const showPrice = document.getElementById("show-price");
-            const showPhoto = document.getElementById("show-photo");
-            const showDescription = document.getElementById("show-description");
-            const showStatus = document.getElementById("show-status");
-
-            showName.value = product.name;
-            showCategory.value = product.category.name;
-            showStock.value = product.stock;
-            showPrice.value = new Intl.NumberFormat('id-ID').format(product.price);
-            showDescription.value = product.description;
-            showStatus.value = product.status;
-            showPhoto.src = `/storage/${product.photo}`;
-
-            // to Edit Modal
-            const editProductButton = document.getElementById("edit-product-button")
-            editProductButton.onclick = () => editProduct(product)
-        }
-
-        function editProduct(product) {
-            const editName = document.getElementById("edit-name");
-            const editCategory = document.getElementById("edit-category_id");
-            const editStock = document.getElementById("edit-stock");
-            const editPrice = document.getElementById("edit-price");
-            const editPhotoPreview = document.getElementById("edit-photo-preview");
-            const editDescription = document.getElementById("edit-description");
-            const editStatus = document.getElementById("edit-status");
-            const editForm = document.getElementById("edit-form");
-
-            editName.value = product.name;
-            editCategory.value = product.category_id; // Assuming product contains category_id
-            editStock.value = product.stock;
-            editPrice.value = product.price;
-            editDescription.value = product.description;
-            editStatus.value = product.status;
-            editForm.action = `/products/${product.id}`;
-            editPhotoPreview.src = `/storage/${product.photo}`;
-
-            // Add stock button
-            const addStockButton = document.getElementById("add-stock-button")
-            addStockButton.onclick = () => addStock(product)
-
-        }
-
-        function previewEditImage(event) {
-            var input = event.target;
-            var reader = new FileReader();
-
-            reader.onload = function() {
-                var preview = document.getElementById('edit-photo-preview');
-                preview.src = reader.result;
-                preview.style.display = 'block';
-            }
-
-            // Read the selected file as a data URL
-            if (input.files && input.files[0]) {
-                reader.readAsDataURL(input.files[0]);
-            }
-        }
-    </script>
+    <script></script>
 @endsection

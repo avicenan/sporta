@@ -7,12 +7,9 @@ use Illuminate\Http\Request;
 
 class StockLogController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        $stockLogs = StockLog::all();
+        $stockLogs = StockLog::paginate(10);
 
         return view('dashboard.stock-log.index', [
             'nav' => 'Riwayat Stok',
@@ -21,50 +18,23 @@ class StockLogController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
     {
-        //
-    }
+        // Validate the form input
+        $validatedData = $request->validate([
+            'product_id' => 'required|exists:products,id',
+            'user_id' => 'required|exists:users,id',
+            'stock_change' => 'required|integer|min:1',
+            'type' => 'required|in:masuk,keluar',
+            'information' => 'required|string|max:255',
+        ]);
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(StockLog $stockLog)
-    {
-        //
-    }
+        // Create a new stock log
+        $stockLog = StockLog::create($validatedData);
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(StockLog $stockLog)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, StockLog $stockLog)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(StockLog $stockLog)
-    {
-        //
+        // Return json response
+        return response()->json(['success' => true, 'log' => $stockLog]);
     }
 }

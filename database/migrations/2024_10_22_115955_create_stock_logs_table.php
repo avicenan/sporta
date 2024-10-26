@@ -14,9 +14,10 @@ return new class extends Migration
     {
         Schema::create('stock_logs', function (Blueprint $table) {
             $table->id();
-            // $table->foreignIdFor(Product::class, 'product_id');
             $table->foreignId('product_id')->constrained('products')->cascadeOnDelete();
-            $table->string('added_stock');
+            $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
+            $table->enum('type', ['masuk', 'keluar'])->default('masuk');
+            $table->string('stock_change')->nullable();
             $table->string('information');
             $table->timestamps();
         });

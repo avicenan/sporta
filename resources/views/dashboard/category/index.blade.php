@@ -57,21 +57,6 @@
                                     <span class="material-symbols-rounded fs-5" data-bs-toggle="tooltip"
                                         data-bs-title="Lihat detail">visibility</span>
                                 </button>
-                                @if ($category->status == 'aktif')
-                                    <button class="btn btn-outline-secondary pb-1">
-                                        <span class="material-symbols-rounded fs-5" data-bs-toggle="tooltip"
-                                            data-bs-title="Non-aktifkan kategori">do_not_disturb_on</span>
-                                    </button>
-                                @else
-                                    <button class="btn btn-outline-success pb-1">
-                                        <span class="material-symbols-rounded fs-5" data-bs-toggle="tooltip"
-                                            data-bs-title="Aktifkan kategori">check_circle</span>
-                                    </button>
-                                @endif
-                                {{-- <button class="btn btn-outline-danger pb-1">
-                                <span class="material-symbols-rounded fs-5" data-bs-toggle="tooltip"
-                                    data-bs-title="Hapus produk">delete</span>
-                            </button> --}}
                             </td>
                         </tr>
                     @endforeach
@@ -102,49 +87,30 @@
     {{-- Script --}}
     <script>
         function showCategory(category) {
-            const showName = document.getElementById("showName");
-            const showIcon = document.getElementById("showIcon");
-            const showIconImg = document.getElementById("showIconImg");
-            const showDescription = document.getElementById("showDescription");
-            const showProductQty = document.getElementById("showProductQty");
-            const showStatus = document.getElementById("showStatus");
-
-            showName.value = category.name;
-            showIcon.value = category.icon;
-            showIconImg.textContent = category.icon;
-            showDescription.value = category.description;
-            showProductQty.value = category.product_qty;
-            showStatus.value = category.status;
+            $("#showName").val(category.name);
+            $("#showIcon").val(category.icon);
+            $("#showIconImg").text(category.icon);
+            $("#showDescription").val(category.description);
+            $("#showProductQty").val(category.product_qty);
+            $("#showStatus").val(category.status);
 
             // to edit category
-            const editCategoryButton = document.getElementById("edit-category-button")
-            editCategoryButton.onclick = () => editCategory(category)
+            $("#edit-category-button").click(() => editCategory(category));
         }
 
 
         function editCategory(category) {
-            const editName = document.getElementById("editName");
-            const editIcon = document.getElementById("editIcon");
-            const editIconImg = document.getElementById("editIconImg");
-            const editDescription = document.getElementById("editDescription");
-            const editProductQty = document.getElementById("editProductQty");
-            const editStatus = document.getElementById("editStatus");
-            const editForm = document.getElementById("editForm");
-
-            editName.value = category.name;
-            editIcon.value = category.icon;
-            editIconImg.textContent = category.icon;
-            editDescription.value = category.description;
-            editProductQty.value = category.product_qty;
-            editStatus.value = category.status;
-            editForm.action = `/categories/${category.id}`;
-
-
+            $("#editName").val(category.name);
+            $("#editIcon").val(category.icon);
+            $("#editIconImg").text(category.icon);
+            $("#editDescription").val(category.description);
+            $("#editProductQty").val(category.product_qty);
+            $("#editStatus").val(category.status);
+            $("#editForm").attr('action', `/categories/${category.id}`);
         }
 
         function changeIcon(iconName, id) {
-            const viewElement = document.getElementById(id);
-            viewElement.textContent = iconName;
+            $(`#${id}`).text(iconName);
         }
     </script>
 @endsection

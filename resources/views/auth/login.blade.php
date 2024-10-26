@@ -16,8 +16,8 @@
             {{-- card login --}}
             <div class="card">
                 <h2 class="card-header">Masuk</h2>
-                <img src="{{ asset('storage/placeholder/placeholder-img.png') }}" class="card-img-top object-fit-cover"
-                    alt="..." style="max-height: 250px">
+                <img src="{{ asset('storage/full-logo.webp') ?? asset('storage/placeholder/placeholder-img.png') }}"
+                    class="card-img-top object-fit-cover" alt="..." style="max-height: 250px">
                 <div class="card-body">
                     <form method="POST" action="/login">
                         @csrf
@@ -42,13 +42,6 @@
                                     <strong>{{ $message }}</strong>
                                 </span>
                             @enderror
-                        </div>
-                        <div class="mb-3 form-check">
-                            <input class="form-check-input" type="checkbox" name="remember" id="remember"
-                                {{ old('remember') ? 'checked' : '' }}>
-                            <label class="form-check-label" for="remember">
-                                Remember Me
-                            </label>
                         </div>
                         <button type="submit" class="btn btn-primary">Masuk</button>
                     </form>

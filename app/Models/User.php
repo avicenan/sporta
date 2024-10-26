@@ -53,11 +53,16 @@ class User extends Authenticatable
 
     public function bag()
     {
-        return $this->hasOne(Bag::class);
+        return $this->hasOne(Bag::class, 'id');
     }
 
-    public function sales()
+    public function orders()
     {
-        return $this->hasMany(Sales::class);
+        return $this->hasMany(Order::class);
+    }
+
+    public function logs()
+    {
+        return $this->hasMany(StockLog::class);
     }
 }

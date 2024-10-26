@@ -20,6 +20,6 @@ class Product extends Model
 
     public function bags()
     {
-        return $this->belongsToMany(Bag::class, 'bag_products')->withPivot('quantity')->withTimestamps();
+        return $this->belongsToMany(Bag::class, 'bag_products')->withPivot('quantity', 'sum_price')->withTimestamps();
     }
 }

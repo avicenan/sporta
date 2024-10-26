@@ -1,12 +1,12 @@
 <nav class="">
     <div class="d-flex flex-column align-items-center align-items-sm-start px-3 pt-3 text-primary min-vh-100 ">
         <a href="/" class="d-flex align-items-center pb-3 mb-md-3 me-md-auto text-primary text-decoration-none ">
-            <span class="fs-5 d-none d-sm-inline fw-bold">Sporta Self Checkout</span>
+            <span class="fs-5 d-none d-sm-inline fw-bold">Sporta Cashier</span>
         </a>
         <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start" id="menu">
             <li class="nav-item mb-5">
                 @isset($categories)
-                    <a href="/shop-categories" class="nav-link px-0 align-middle text-primary d-flex">
+                    <div class="nav-link px-0 align-middle text-primary d-flex">
                         <div class="">
                             <span class="material-symbols-rounded">
                                 category
@@ -15,7 +15,7 @@
                         <div class="ms-3 d-none d-sm-inline fs-5">
                             <span>Kategori</span>
                         </div>
-                    </a>
+                    </div>
                 @endisset
             </li>
             <li class="mb-3 @if (!request()->query('category') && Route::is('shop')) fw-bold ms-3 @endif">
@@ -60,6 +60,7 @@
                 @endif
             @endisset
 
+
         </ul>
         <hr>
         @if (Auth::check())
@@ -72,9 +73,7 @@
                     <span class="d-none d-sm-inline mx-1 ms-3">{{ Auth::user()->name }}</span>
                 </a>
                 <ul class="dropdown-menu dropdown-menu-dark text-small shadow">
-                    <li><a class="dropdown-item" href="#">Settings</a></li>
-                    <li><a class="dropdown-item" href="/dashboard">Dashboard</a></li>
-                    <li><a class="dropdown-item" href="#">Profile</a></li>
+                    <li><a class="dropdown-item" href="/dashboard">Sporta Admin</a></li>
                     <li>
                         <hr class="dropdown-divider">
                     </li>

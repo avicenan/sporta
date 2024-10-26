@@ -14,11 +14,11 @@ class Bag extends Model
 
     public function products()
     {
-        return $this->belongsToMany(Product::class, 'bag_products')->withPivot('quantity')->withTimestamps();
+        return $this->belongsToMany(Product::class, 'bag_products')->withPivot('quantity', 'sum_price')->withTimestamps();
     }
 
-    public function sales()
+    public function orders()
     {
-        return $this->hasMany(Sales::class);
+        return $this->hasMany(Order::class);
     }
 }

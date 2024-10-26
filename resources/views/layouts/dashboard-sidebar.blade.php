@@ -22,8 +22,8 @@
                     @endif
                 </a>
             </li>
-            <li class="mb-3 @if (Route::is('sales.*')) fw-bold ms-3 @endif">
-                <a href="/dashboard/sales" class="nav-link px-0 align-middle text-white d-flex">
+            <li class="mb-3 @if (Route::is('orders.*')) fw-bold ms-3 @endif">
+                <a href="/dashboard/orders" class="nav-link px-0 align-middle text-white d-flex">
                     <div class="">
                         <span class="material-symbols-rounded">
                             receipt
@@ -32,7 +32,7 @@
                     <div class="ms-3 d-none d-sm-inline ">
                         <span>Penjualan</span>
                     </div>
-                    @if (Route::is('sales.*'))
+                    @if (Route::is('orders.*'))
                         <div class="ms-3">
                             <span class="material-symbols-rounded fs-6 text-warning shadow">circle</span>
                         </div>
@@ -90,19 +90,24 @@
                     @endif
                 </a>
             </li>
-            <li class="mb-3">
-                <a href="/dashboard/customers" class="nav-link px-0 align-middle text-white d-flex">
+            <li class="mb-3 @if (Route::is('employees.*')) fw-bold ms-3 @endif">
+                <a href="/dashboard/employees" class="nav-link px-0 align-middle text-white d-flex">
                     <div class="">
                         <span class="material-symbols-rounded">
                             groups
                         </span>
                     </div>
                     <div class="ms-3 d-none d-sm-inline ">
-                        <span>Pelanggan</span>
+                        <span>Pegawai</span>
                     </div>
+                    @if (Route::is('employees.*'))
+                        <div class="ms-3">
+                            <span class="material-symbols-rounded fs-6 text-warning shadow">circle</span>
+                        </div>
+                    @endif
                 </a>
             </li>
-            <li class="mb-3  @if (Route::is('shop')) fw-bold ms-3 @endif">
+            <li class="mb-3 @if (Route::is('shop')) fw-bold ms-3 @endif">
                 <a href="/shop" class="nav-link px-0 align-middle text-white d-flex">
                     <div class="">
                         <span class="material-symbols-rounded">
@@ -110,7 +115,7 @@
                         </span>
                     </div>
                     <div class="ms-3 d-none d-sm-inline">
-                        <span class="">Shop (public)</span>
+                        <span class="">Sporta Cashier</span>
                     </div>
                     @if (Route::is('shop*'))
                         <div class="ms-3">
@@ -131,9 +136,7 @@
                     <span class="d-none d-sm-inline mx-1 ms-3">{{ Auth::user()->name }}</span>
                 </a>
                 <ul class="dropdown-menu dropdown-menu-dark text-small shadow">
-                    <li><a class="dropdown-item" href="/shop">Shop</a></li>
-                    <li><a class="dropdown-item" href="#">Settings</a></li>
-                    <li><a class="dropdown-item" href="#">Profile</a></li>
+                    <li><a class="dropdown-item" href="/shop">Sporta Cashier</a></li>
                     <li>
                         <hr class="dropdown-divider">
                     </li>
