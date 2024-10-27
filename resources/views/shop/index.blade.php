@@ -46,7 +46,7 @@
                             <div class="card btn btn-light border-0 text-start p-0" style="width: 18rem">
                                 <img src="{{ asset('storage/' . $product->photo) }}"
                                     onerror="this.src='{{ asset('storage/placeholder/placeholder-img.png') }}'"
-                                    class="card-img-top" alt="...">
+                                    class="card-img-top" alt="..." style="max-height: 300px; object-fit: cover">
                                 <div class="card-body">
                                     <h5 class="card-title">{{ $product->name }}</h5>
                                     <p class="card-text">Rp. {{ number_format($product->price, 0, ',', '.') }}</p>
