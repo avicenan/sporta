@@ -1,5 +1,21 @@
 @extends('layouts.dashboard-app')
 @section('content')
+    {{-- Success Alert Category --}}
+    @if (session('success'))
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            {{ session('success') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    @endisset
+
+    {{-- Error Alert Category --}}
+    @if (session('error'))
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            {{ session('error') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    @endisset
+
     <div class="card p-3 mb-2">
         <table class="table table-striped table-bordered table-hover p-4">
             <thead>
@@ -39,7 +55,8 @@
                             <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
                                 <div class="modal-content">
                                     <div class="modal-header">
-                                        <h5 class="modal-title" id="orderDetailModalLabel">Detail Order #{{ $order->code }}
+                                        <h5 class="modal-title" id="orderDetailModalLabel">Detail Order
+                                            #{{ $order->code }}
                                         </h5>
                                         <button type="button" class="btn-close" data-bs-dismiss="modal"
                                             aria-label="Close"></button>
@@ -48,18 +65,21 @@
                                         <div class="row">
                                             <div class="col">
                                                 <div class="form-floating mb-3">
-                                                    <input type="text" class="form-control" id="floatingOrderCode"
-                                                        placeholder="Order Code" value="#{{ $order->code }}" readonly>
+                                                    <input type="text" class="form-control"
+                                                        id="floatingOrderCode" placeholder="Order Code"
+                                                        value="#{{ $order->code }}" readonly>
                                                     <label for="floatingOrderCode">Kode Transaksi</label>
                                                 </div>
                                                 <div class="form-floating mb-3">
-                                                    <input type="text" class="form-control" id="floatingCashierName"
-                                                        placeholder="Nama Kasir" value="{{ $order->user->name }}" readonly>
+                                                    <input type="text" class="form-control"
+                                                        id="floatingCashierName" placeholder="Nama Kasir"
+                                                        value="{{ $order->user->name }}" readonly>
                                                     <label for="floatingCashierName">Nama Kasir</label>
                                                 </div>
                                                 <div class="form-floating mb-3">
                                                     <input type="text" class="form-control" id="floatingMemberId"
-                                                        placeholder="ID Anggota" value="{{ $order->member_id }}" readonly>
+                                                        placeholder="ID Anggota" value="{{ $order->member_id }}"
+                                                        readonly>
                                                     <label for="floatingMemberId">ID Member</label>
                                                 </div>
 
@@ -73,15 +93,16 @@
                                                     <label for="floatingTotal">Total</label>
                                                 </div>
                                                 <div class="form-floating mb-3">
-                                                    <input type="text" class="form-control" id="floatingPaymentMethod"
-                                                        placeholder="Metode Pembayaran"
+                                                    <input type="text" class="form-control"
+                                                        id="floatingPaymentMethod" placeholder="Metode Pembayaran"
                                                         value="{{ ucfirst($order->payment_method) }}" readonly>
                                                     <label for="floatingPaymentMethod">Metode Pembayaran</label>
                                                 </div>
                                                 <div class="form-floating mb-3">
                                                     <input type="text" class="form-control" id="floatingDate"
                                                         placeholder="Tanggal"
-                                                        value="{{ $order->created_at->format('d-m-Y H:i') }}" readonly>
+                                                        value="{{ $order->created_at->format('d-m-Y H:i') }}"
+                                                        readonly>
                                                     <label for="floatingDate">Tanggal</label>
                                                 </div>
                                             </div>
@@ -94,7 +115,8 @@
                                             @foreach ($order->items as $item)
                                                 <li class="list-group-item d-flex justify-content-between">
                                                     <span>{{ $item->product_name }} ({{ $item->quantity }})</span>
-                                                    <span>Rp. {{ number_format($item->sum_price, 0, ',', '.') }}</span>
+                                                    <span>Rp.
+                                                        {{ number_format($item->sum_price, 0, ',', '.') }}</span>
                                                 </li>
                                             @endforeach
                                         </ul>

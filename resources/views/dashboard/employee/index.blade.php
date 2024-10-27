@@ -1,6 +1,22 @@
 @extends('layouts.dashboard-app')
 
 @section('content')
+    {{-- Success Alert Category --}}
+    @if (session('success'))
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            {{ session('success') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    @endisset
+
+    {{-- Error Alert Category --}}
+    @if (session('error'))
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            {{ session('error') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    @endisset
+
     {{-- Employees List --}}
     <div class="card p-3 mb-2">
         <table class="table table-striped table-bordered table-hover p-4">
@@ -36,7 +52,8 @@
     </div>
 
     {{-- Pagination Nav --}}
-    <div class="mb-2"><i>Menampilkan hasil dari {{ $employees->firstItem() }} sampai {{ $employees->lastItem() }} dari
+    <div class="mb-2"><i>Menampilkan hasil dari {{ $employees->firstItem() }} sampai {{ $employees->lastItem() }}
+            dari
             {{ $employees->total() }}</i>
     </div>
     <div class="d-flex">

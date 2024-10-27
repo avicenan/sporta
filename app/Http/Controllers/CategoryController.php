@@ -5,12 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\Category;
 use App\Http\Requests\StoreCategoryRequest;
 use App\Http\Requests\UpdateCategoryRequest;
+use Illuminate\Support\Facades\DB;
 
 class CategoryController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
         $categories = Category::paginate(10);
@@ -21,49 +19,33 @@ class CategoryController extends Controller
         ]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(StoreCategoryRequest $request)
     {
-        $validatedData = $request->validate([
-            'name' => 'required|string|unique:categories|max:255',
-            'icon' => 'required|string|max:64',
-            'description' => 'required|string|max:1000',
-            'status' => 'string|max:64',
-        ]);
 
-        Category::create($validatedData);
-        return redirect()->back()->with('success', 'Berhasil menambahkan kategori baru');
+        DB::beginTransaction();
+
+        try {
+            $validatedData = $request->validate([
+                'name' => 'required|string|unique:categories|max:255',
+                'icon' => 'required|string|max:64',
+                'description' => 'required|string|max:1000',
+                'status' => 'string|max:64',
+            ]);
+
+            $category = new Category();
+            $category->fill($validatedData);
+            $category->save();
+
+            DB::commit();
+
+            return redirect()->back()->with('success', 'Berhasil menambahkan kategori baru');
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            return redirect()->back()->with('error', 'Gagal menambahkan kategori, ' . $e->getMessage());
+        }
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Category $category)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Category $category)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(UpdateCategoryRequest $request, Category $category)
     {
         // return dd($request);
@@ -77,17 +59,19 @@ class CategoryController extends Controller
 
         // return dd($validatedData);
 
-        $category->update($validatedData);
-        $category->save();
+        DB::beginTransaction();
 
-        return redirect()->back()->with('success', 'Berhasil merperbarui kategori "' . $request->name . '"');
-    }
+        try {
+            $category->fill($validatedData);
+            $category->save();
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Category $category)
-    {
-        //
+            DB::commit();
+
+            return redirect()->back()->with('success', 'Berhasil merperbarui kategori "' . $request->name . '"');
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            return redirect()->back()->with('error', 'Gagal memperbarui kategori, ' . $e->getMessage());
+        }
     }
 }

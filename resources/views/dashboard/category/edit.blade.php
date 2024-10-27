@@ -12,6 +12,7 @@
                     <div class="mb-3">
                         <label for="editName" class="form-label">Nama kategori</label>
                         <input type="text" class="form-control" id="editName" name="name">
+                        <div id="errorName" class="form-text d-none text-danger fw-semibold"></div>
                     </div>
 
                     <div class="mb-3">
@@ -24,11 +25,13 @@
                         <div id="iconHelp" class="form-text">Ikon diambil dari <a
                                 href="https://fonts.google.com/icons">Google Material Icons</a>.
                         </div>
+                        <div id="errorIcon" class="form-text d-none text-danger fw-semibold"></div>
                     </div>
 
                     <div class="mb-3">
                         <label for="editDescription" class="form-label">Deskripsi</label>
                         <textarea class="form-control" aria-label="With textarea" id="editDescription" name="description"></textarea>
+                        <div id="errorDescription" class="form-text d-none text-danger fw-semibold"></div>
                     </div>
 
                     <div class="mb-3">

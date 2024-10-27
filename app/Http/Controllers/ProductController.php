@@ -9,6 +9,7 @@ use App\Http\Requests\UpdateProductRequest;
 use App\Models\Category;
 use App\Models\StockLog;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class ProductController extends Controller
 {
@@ -27,40 +28,60 @@ class ProductController extends Controller
 
     public function store(StoreProductRequest $request)
     {
-        // Validate the form input
         $validatedData = $request->validate([
             'name' => 'required|string|max:255',
             'category_id' => 'required|exists:categories,id',
-            'stock' => 'required|integer|min:1',
             'price' => 'required|numeric|min:1000',
             'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'description' => 'required|string',
             'status' => 'string|max:64',
+            'stock' => 'required|integer|min:0'
         ]);
 
-        // Handle the file upload 
-        if ($request->hasFile('photo')) {
-            $filePath = $request->file('photo')->store('uploads', 'public');
-            $validatedData['photo'] = $filePath;
-        }
-
-        // Save the validated data to the database
+        DB::beginTransaction();
         try {
-            $product = Product::create($validatedData);
+            $product = new Product();
+
+            $product->fill($validatedData);
+
+            if ($request->hasFile('photo')) {
+                $product->photo = $request->file('photo')->store('uploads', 'public');
+            }
+
+            $product->save();
+
+            $this->writeLog($product->id, $product->stock, 'masuk', 'Produk baru ditambahkan');
+
+            DB::commit();
         } catch (\Exception $e) {
+            DB::rollBack();
             return redirect()->back()->with('error', 'Gagal menambahkan produk "' . $request->name . '", ' . $e->getMessage());
         }
 
-        // writting log
-        StockLog::create([
-            'product_id' => $product->id,
-            'user_id' => Auth::id(),
-            'stock_change' => $product->stock,
-            'type' => 'masuk',
-            'information' => 'Produk baru ditambahkan',
-        ]);
-
         return redirect()->back()->with('success', 'Berhasil menambahkan produk "' . $product->name . '"');
+    }
+
+    private function writeLog($productId, $stockChange, $type, $information)
+    {
+        $logData = [
+            'product_id' => $productId,
+            'user_id' => Auth::id(),
+            'stock_change' => $stockChange,
+            'type' => $type,
+            'information' => $information,
+        ];
+
+        DB::beginTransaction();
+        try {
+            $stockLog = new StockLog();
+
+            $stockLog->fill($logData);
+            $stockLog->save();
+
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollBack();
+        }
     }
 
     public function update(UpdateProductRequest $request, Product $product)

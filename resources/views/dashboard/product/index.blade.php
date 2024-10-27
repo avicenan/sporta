@@ -11,11 +11,18 @@
         </div>
     </div>
 
-    {{-- Success Alert Category --}}
+    {{-- Success Alert Product --}}
     @if (session('success'))
-        <div class="alert alert-success alert-dismissible fade show d-flex align-middle" role="alert">
-            <span class="material-symbols-rounded me-3 text-success">check_circle</span>
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
             {{ session('success') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    @endisset
+
+    {{-- Error Alert Product --}}
+    @if (session('error'))
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            {{ session('error') }}
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
     @endisset
@@ -86,7 +93,8 @@
     </div>
 
     {{-- Pagination Nav --}}
-    <div class="mb-2"><i>Menampilkan hasil dari {{ $products->firstItem() }} sampai {{ $products->lastItem() }} dari
+    <div class="mb-2"><i>Menampilkan hasil dari {{ $products->firstItem() }} sampai {{ $products->lastItem() }}
+            dari
             {{ $products->total() }}</i>
     </div>
     <div class="d-flex">
@@ -96,7 +104,7 @@
     {{-- MODAL --}}
 
     {{-- Create Product Modal --}}
-    <form action="/products" method="POST" enctype="multipart/form-data">
+    <form action="/products" method="POST" enctype="multipart/form-data" id="create-form">
         @csrf
         <div class="modal fade" id="createProductModal" tabindex="-1" aria-labelledby="createProductModalLabel"
             aria-hidden="true">
@@ -104,22 +112,25 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h1 class="modal-title fs-5" id="createProductModalLabel">Tambah produk</h1>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                            aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
 
                         <div class="mb-3">
                             <label for="name" class="form-label">Nama produk</label>
                             <input type="text" class="form-control" id="name" aria-describedby="name"
-                                placeholder="Adidas bola lapangan - hitam" name="name" value="{{ old('name') }}"
-                                required>
+                                placeholder="Adidas bola lapangan - hitam" name="name"
+                                value="{{ old('name') }}" required>
+                            <div id="errorName" class="form-text d-none"></div>
                         </div>
 
                         <div class="mb-3">
                             <label for="category_id" class="form-label">Kategori</label>
                             <div class="input-group">
                                 <label class="input-group-text" for="category_id" id="categoryIconImg"></label>
-                                <select class="form-select" id="category" name="category_id" onchange="" required>
+                                <select class="form-select" id="category" name="category_id" onchange=""
+                                    required>
                                     @isset($categories)
                                         @foreach ($categories as $category)
                                             <option value="{{ $category->id }}">{{ $category->name }}</option>
@@ -162,8 +173,8 @@
                         </div>
 
                         <div class="mb-3 form-check">
-                            <input type="checkbox" class="form-check-input" name="status" id="status" checked
-                                value="aktif">
+                            <input type="checkbox" class="form-check-input" name="status" id="status"
+                                checked value="aktif">
                             <label class="form-check-label" for="status">Aktifkan status produk</label>
                         </div>
                     </div>
@@ -183,13 +194,15 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h1 class="modal-title fs-5" id="showProductModalLabel">Lihat produk</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
 
                     <div class="mb-3">
                         <label for="show-name" class="form-label">Nama produk</label>
-                        <input type="text" class="form-control" id="show-name" value="#" disabled readonly>
+                        <input type="text" class="form-control" id="show-name" value="#" disabled
+                            readonly>
                     </div>
 
                     <div class="mb-3">
@@ -200,7 +213,8 @@
 
                     <div class="mb-3">
                         <label for="show-stock" class="form-label">Stok</label>
-                        <input type="number" class="form-control" id="show-stock" value="#" disabled readonly>
+                        <input type="number" class="form-control" id="show-stock" value="#" disabled
+                            readonly>
                         <div id="stockHelp" class="form-text"><a href="#">Lihat riwayat</a></div>
                     </div>
 
@@ -264,13 +278,20 @@
                         <div class="mb-3">
                             <label for="edit-name" class="form-label">Nama produk</label>
                             <input type="text" class="form-control" id="edit-name" aria-describedby="name"
-                                placeholder="Adidas bola lapangan - hitam" name="name" value="#" required>
+                                placeholder="Adidas bola lapangan - hitam" name="name" value="#"
+                                required>
+                            @error('name')
+                                <div class="invalid-feedback" id="name-feedback">
+                                    {{ $message }}
+                                </div>
+                            @enderror
                         </div>
 
                         <div class="mb-3">
                             <label for="edit-category_id" class="form-label">Kategori</label>
                             <div class="input-group">
-                                <label class="input-group-text" for="edit-category_id" id="categoryIconImg"></label>
+                                <label class="input-group-text" for="edit-category_id"
+                                    id="categoryIconImg"></label>
                                 <select class="form-select" id="edit-category_id" name="category_id" required>
                                     @isset($categories)
                                         @foreach ($categories as $category)
@@ -288,8 +309,9 @@
                             <div class="input-group">
                                 <input type="number" class="form-control" placeholder="0"
                                     aria-describedby="button-addon2" id="edit-stock" readonly disabled>
-                                <button type="button" class="btn btn-outline-info pb-1" data-bs-title="Tambah stok"
-                                    id="add-stock-button" data-bs-toggle="modal" data-bs-target="#addStockModal">
+                                <button type="button" class="btn btn-outline-info pb-1"
+                                    data-bs-title="Tambah stok" id="add-stock-button" data-bs-toggle="modal"
+                                    data-bs-target="#addStockModal">
                                     <span class="material-symbols-rounded fs-5" data-bs-toggle="tooltip"
                                         data-bs-title="Tambah stok">exposure_plus_1</span>
                                 </button>
@@ -362,8 +384,8 @@
                         <div class="mb-3">
                             <label for="information" class="form-label">Jumlah penambahan</label>
                             <div class="input-group">
-                                <input type="number" class="form-control" placeholder="0" id="now-stock" readonly
-                                    disabled>
+                                <input type="number" class="form-control" placeholder="0" id="now-stock"
+                                    readonly disabled>
                                 <span class="input-group-text">+</span>
                                 <input type="number" class="form-control" placeholder="5" id="add-stock"
                                     name="qty" value="{{ old('qty') }}" required>
@@ -374,12 +396,14 @@
                             <label for="information" class="form-label">Keterangan</label>
                             <input type="text" class="form-control" id="information" name="information"
                                 placeholder="vendor A, suplai bulanan" required>
-                            <div id="informationHelp" class="form-text">Keterangan berisi siapa yang menambahkan stok
+                            <div id="informationHelp" class="form-text">Keterangan berisi siapa yang menambahkan
+                                stok
                                 dan darimana stok berasal.</div>
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batalkan</button>
+                        <button type="button" class="btn btn-secondary"
+                            data-bs-dismiss="modal">Batalkan</button>
                         <button type="submit" class="btn btn-primary">Simpan</button>
                     </div>
                 </div>

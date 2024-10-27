@@ -8,11 +8,14 @@ use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
+use function Psy\debug;
+
 class ShopController extends Controller
 {
 
     public function index(Request $request)
     {
+        return dd($request);
         // if user authenticated get bag products, else get empty bag
         $bagProducts = Auth::check() ? Bag::find(Auth::user()->bag_id)->products : [];
 

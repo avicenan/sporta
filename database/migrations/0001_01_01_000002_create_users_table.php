@@ -15,10 +15,9 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('email')->unique();
-            $table->foreignId('role_id')->constrained('roles')->cascadeOnDelete()->default(2);
+            $table->foreignId('role_id')->constrained('roles')->cascadeOnDelete();
             $table->string('password');
             $table->foreignId('bag_id')->constrained('bags')->cascadeOnDelete();
-            $table->timestamp('last_login')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

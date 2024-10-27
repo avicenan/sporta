@@ -20,6 +20,14 @@
         </div>
     @endisset
 
+    {{-- Error Alert Category --}}
+    @if (session('error'))
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            {{ session('error') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    @endisset
+
     {{-- Product List --}}
     <div class="card p-3 mb-3">
         <table class="table table-striped table-bordered table-hover p-4">
@@ -65,7 +73,8 @@
         </table>
     </div>
 
-    <div class="mb-2"><i>Menampilkan hasil dari {{ $categories->firstItem() }} sampai {{ $categories->lastItem() }}
+    <div class="mb-2"><i>Menampilkan hasil dari {{ $categories->firstItem() }} sampai
+            {{ $categories->lastItem() }}
             dari
             {{ $categories->total() }}</i>
     </div>

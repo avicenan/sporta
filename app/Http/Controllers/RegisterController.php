@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreRegisterRequest;
+use App\Models\Bag;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class RegisterController extends Controller
 {
@@ -23,13 +25,26 @@ class RegisterController extends Controller
             'password' => 'required|string|min:8|confirmed',
         ]);
 
-        $validatedData['password'] = bcrypt($validatedData['password']);
+        DB::beginTransaction();
+        try {
 
-        $user = User::create($validatedData);
+            $bag = new Bag();
+            $bag->save();
 
-        // initialize bag
-        $user->bag()->create();
+            $user = new User($validatedData);
+            $user['role_id'] = 2;
+            $user['bag_id'] = $bag->id;
+            $user->save();
 
-        return redirect('/login')->with(['success', 'Registrasi Berhasil'], $user);
+            DB::commit();
+
+            return redirect('/login')->with(['success', 'Registrasi Berhasil'], $user);
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            return back()->withErrors([
+                'error' => 'Terjadi kesalahan saat registrasi'
+            ]);
+        }
     }
 }

@@ -16,9 +16,12 @@ class Admin
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (!Auth::check() || !Auth::user()->role->name == 'admin') {
-            return redirect()->route('login')->with('error', 'Anda tidak memiliki akses!');
+        if (!Auth::check()) {
+            return redirect()->route('login')->with('error', 'Silakan login terlebih dahulu!');
+        } elseif (Auth::user()->role->name !== 'admin') {
+            return redirect()->route('shop');
         }
+
         return $next($request);
     }
 }

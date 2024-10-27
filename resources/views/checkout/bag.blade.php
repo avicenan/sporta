@@ -199,7 +199,7 @@
 
 
     <script>
-        // ajax for checkout
+        // ajax for confirm payment
         $('#confirmPaymentBtn').click(function() {
             $.ajax({
                 url: "{{ route('checkout') }}",
@@ -240,12 +240,5 @@
                 }
             });
         });
-
-        // refresh on close transaction modal button
-        // $('.transactionSuccessBtnClose').click(function() {
-        //     $('#refreshForm').submit();
-        // });
     </script>
-
-    {{-- @endif --}}
 @endsection

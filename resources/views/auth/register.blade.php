@@ -10,6 +10,13 @@
                 <img src="{{ asset('storage/full-logo.webp') ?? asset('storage/placeholder/placeholder-img.png') }}"
                     class="card-img-top object-fit-cover" alt="..." style="max-height: 250px">
                 <div class="card-body">
+                    @if (session('failed'))
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            {{ session('failed') }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    @endif
+
                     <form method="POST" action="/register">
                         @csrf
                         <div class="mb-3">
@@ -55,12 +62,10 @@
                     </form>
 
                     {{-- sudah punya akun --}}
-                    @if (Route::has('login'))
-                        <div class="mt-3">
-                            Sudah punya akun?
-                            <a href="{{ route('login') }}"> Masuk sekarang</a>
-                        </div>
-                    @endif
+                    <div class="mt-3">
+                        Sudah punya akun?
+                        <a href="{{ route('login') }}"> Masuk sekarang</a>
+                    </div>
                 </div>
                 <div class="card-footer">
                     <div class="d-flex">

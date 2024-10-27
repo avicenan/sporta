@@ -61,7 +61,7 @@ Route::middleware(['auth', 'admin'])->group(function () {
     });
 
     Route::controller(OrderController::class)->group(function () {
-        Route::get('/dashboard/orders', 'index')->name('orders.index');
+        Route::get('/dashboard/orders', 'index')->name('orders.index')->middleware('admin');
     });
 
     Route::controller(ProductController::class)->group(function () {
